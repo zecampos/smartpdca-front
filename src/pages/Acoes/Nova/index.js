@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 
-// import { Container } from './styles';
-import { Container, Row, Col, Form, Button, InputGroup } from 'react-bootstrap';
-import InputMask from 'react-input-mask';
+import Step1 from '../../../components/Foms/Step1';
+import Step2 from '../../../components/Foms/Step2';
+import Step3 from '../../../components/Foms/Step3';
+import Step4 from '../../../components/Foms/Step4';
+import Step5 from '../../../components/Foms/Step5';
+import Step6 from '../../../components/Foms/Step6';
+import Steps from '../../../components/Steps';
 
 export default function Nova() {
   const [values, setValues] = useState({
@@ -31,6 +35,7 @@ export default function Nova() {
     despesa_realizada: 0,
     saldo_realizado: 0,
   });
+
   function handleInputChange(name, value) {
     setValues({ ...values, [name]: value });
   }
@@ -107,324 +112,99 @@ export default function Nova() {
       nome: 'Ajuste/Aprimoramento',
     },
   ];
-
+  const steps = [
+    {
+      name: 'Step 1',
+      component: (
+        <Step1
+          handleInputChange={handleInputChange}
+          conjuntos={conjuntos}
+          matriz={matriz}
+          fase={fase}
+          values={values}
+        />
+      ),
+    },
+    {
+      name: 'Step 2',
+      component: (
+        <Step2
+          handleInputChange={handleInputChange}
+          dataConclusaoFn={dataConclusaoFn}
+          values={values}
+        />
+      ),
+    },
+    {
+      name: 'Step 3',
+      component: (
+        <Step3
+          handleInputChange={handleInputChange}
+          dataConclusaoFn={dataConclusaoFn}
+          values={values}
+        />
+      ),
+    },
+    {
+      name: 'Step 4',
+      component: (
+        <Step4
+          handleInputChange={handleInputChange}
+          dataConclusaoFn={dataConclusaoFn}
+          values={values}
+        />
+      ),
+    },
+    {
+      name: 'Step 5',
+      component: (
+        <Step5 handleInputChange={handleInputChange} values={values} />
+      ),
+    },
+    {
+      name: 'Step 6',
+      component: (
+        <Step6 handleInputChange={handleInputChange} values={values} />
+      ),
+    },
+  ];
   return (
-    <Container>
-      <Row className="justify-content-center">
-        <Col sm={12} xs={12} md={8} lg={8} xl={8}>
-          <Form>
-            <Form.Group>
-              <Form.Label>Conjunto</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('conjunto', value.target.value)
-                }
-                as="select"
-              >
-                {conjuntos.map(item => (
-                  <option key={item.nome}>{item.nome}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Matriz</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('matriz', value.target.value)
-                }
-                as="select"
-              >
-                {matriz.map(item => (
-                  <option key={item.nome}>{item.nome}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Fase</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('fase', value.target.value)
-                }
-                as="select"
-              >
-                {fase.map(item => (
-                  <option key={item.nome}>{item.nome}</option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Descrição</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('descricao', value.target.value)
-                }
-                value={values.descricao}
-                placeholder="O que deve ser Feito?"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Anexo Principal</Form.Label>
-              <input
-                className="form-control-file"
-                type="file"
-                label="Anexo Principal"
-                accept="*"
-                // ref={ref => (this.fileUpload = ref)}
-              />
-            </Form.Group>
+    <Steps />
+    // <Container>
+    //   <Row className="justify-content-center">
+    //     <Col sm={12} xs={12} md={8} lg={8} xl={8}>
+    //       <StepWizard>
+    //         <Step1
+    //           handleInputChange={handleInputChange}
+    //           conjuntos={conjuntos}
+    //           matriz={matriz}
+    //           fase={fase}
+    //           values={values}
+    //         />
+    //         <Step2
+    //           handleInputChange={handleInputChange}
+    //           dataConclusaoFn={dataConclusaoFn}
+    //           values={values}
+    //         />
+    //         <Step3
+    //           handleInputChange={handleInputChange}
+    //           dataConclusaoFn={dataConclusaoFn}
+    //           values={values}
+    //         />
+    //         <Step4
+    //           handleInputChange={handleInputChange}
+    //           dataConclusaoFn={dataConclusaoFn}
+    //           values={values}
+    //         />
+    //         <Step5 handleInputChange={handleInputChange} values={values} />
 
-            <Form.Group>
-              <Form.Label>Link Principal</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('link_principal', value.target.value)
-                }
-                value={values.link_principal}
-                placeholder="http://www...."
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Responsável</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('nome_responsavel', value.target.value)
-                }
-                value={values.nome_responsavel}
-                placeholder="Nome"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Situação Responsavel</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('situacao_responsavel', value.target.value)
-                }
-                value={values.situacao_responsavel}
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Observação Responsavel</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange(
-                    'observacao_responsavel',
-                    value.target.value
-                  )
-                }
-                value={values.observacao_responsavel}
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Data Conclusão</Form.Label>
-              <InputMask
-                className="form-control"
-                mask="99/99/9999"
-                value={values.data_conclusao_responsavel}
-                onChange={value =>
-                  dataConclusaoFn(value, 'data_conclusao_responsavel')
-                }
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Aprovador</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('nome_aprovador', value.target.value)
-                }
-                value={values.nome_aprovador}
-                placeholder="Nome"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Situação Aprovador</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('situacao_aprovador', value.target.value)
-                }
-                value={values.situacao_aprovador}
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Observação Aprovador</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('observacao_aprovador', value.target.value)
-                }
-                value={values.observacao_aprovador}
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Data Conclusão</Form.Label>
-              <InputMask
-                className="form-control"
-                mask="99/99/9999"
-                value={values.data_conclusao_aprovador}
-                onChange={value =>
-                  dataConclusaoFn(value, 'data_conclusao_aprovador')
-                }
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Contador</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('nome_contador', value.target.value)
-                }
-                value={values.nome_contador}
-                placeholder="Nome"
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Situação Contador</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('situacao_contador', value.target.value)
-                }
-                value={values.situacao_contador}
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Observação Contador</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('observacao_contador', value.target.value)
-                }
-                value={values.observacao_contador}
-                placeholder=""
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Data Conclusão</Form.Label>
-              <InputMask
-                className="form-control"
-                mask="99/99/9999"
-                value={values.data_conclusao_contador}
-                onChange={value =>
-                  dataConclusaoFn(value, 'data_conclusao_contador')
-                }
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Informado</Form.Label>
-              <Form.Control placeholder="Nome" />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Observação Informado</Form.Label>
-              <Form.Control
-                onChange={value =>
-                  handleInputChange('observacao_informado', value.target.value)
-                }
-                value={values.observacao_informado}
-                placeholder=""
-              />
-            </Form.Group>
-
-            <Form.Group>
-              <Form.Label>Receita Prevista</Form.Label>
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>R$</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  onChange={value =>
-                    handleInputChange('receita_prevista', value.target.value)
-                  }
-                  value={values.receita_prevista}
-                  placeholder=""
-                />
-              </InputGroup>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Despesa Prevista</Form.Label>
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>R$</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  onChange={value =>
-                    handleInputChange('despesa_prevista', value.target.value)
-                  }
-                  value={values.despesa_prevista}
-                  placeholder=""
-                />
-              </InputGroup>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Saldo Previsto</Form.Label>
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>R$</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  onChange={value =>
-                    handleInputChange('saldo_previsto', value.target.value)
-                  }
-                  value={values.saldo_previsto}
-                  placeholder=""
-                />
-              </InputGroup>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Receita Realizada</Form.Label>
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>R$</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  onChange={value =>
-                    handleInputChange('receita_realizada', value.target.value)
-                  }
-                  value={values.receita_realizada}
-                  placeholder=""
-                />
-              </InputGroup>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Despesa Realizada</Form.Label>
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>R$</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  onChange={value =>
-                    handleInputChange('despesa_realizada', value.target.value)
-                  }
-                  value={values.despesa_realizada}
-                  placeholder=""
-                />
-              </InputGroup>
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Saldo Realizado</Form.Label>
-              <InputGroup className="mb-3">
-                <InputGroup.Prepend>
-                  <InputGroup.Text>R$</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  onChange={value =>
-                    handleInputChange('saldo_realizado', value.target.value)
-                  }
-                  value={values.saldo_realizado}
-                  placeholder=""
-                />
-              </InputGroup>
-            </Form.Group>
-
-            <Button onClick={handleSubmit} variant="primary" type="submit">
-              Enviar
-            </Button>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    //         <Step6 handleInputChange={handleInputChange} values={values} />
+    //       </StepWizard>
+    //       <Button onClick={handleSubmit} variant="primary" type="submit">
+    //         Enviar
+    //       </Button>
+    //     </Col>
+    //   </Row>
+    // </Container>
   );
 }

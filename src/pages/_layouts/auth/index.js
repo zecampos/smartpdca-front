@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container } from 'react-bootstrap';
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import Container from '@material-ui/core/Container';
 
 export default function AuthLayout({ children }) {
-  return <Container fluid>{children}</Container>;
+  return (
+    <>
+      <CssBaseline />
+      <Container fixed>{children}</Container>
+    </>
+  );
 }
 
 AuthLayout.propTypes = {
