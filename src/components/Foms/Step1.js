@@ -8,11 +8,7 @@ import {
   Select,
   Grid,
   TextField,
-  IconButton,
-  Paper,
 } from '@material-ui/core';
-
-import { AddCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   formControl: {

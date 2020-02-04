@@ -49,9 +49,9 @@ export default function Step6({ handleInputChange, values }) {
           label="Receita Prevista"
           value={values.receita_prevista}
           onChange={value =>
-            handleInputChange('receita_prevista', value.target.value)
+            handleInputChange('receita_prevista', parseInt(value.target.value))
           }
-          id="formatted-numberformat-input"
+          id="formatted-numberformat-input1"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">R$</InputAdornment>
@@ -66,9 +66,9 @@ export default function Step6({ handleInputChange, values }) {
           label="Despesa Prevista"
           value={values.despesa_prevista}
           onChange={value =>
-            handleInputChange('despesa_prevista', value.target.value)
+            handleInputChange('despesa_prevista', parseInt(value.target.value))
           }
-          id="formatted-numberformat-input"
+          id="formatted-numberformat-input2"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">R$</InputAdornment>
@@ -83,9 +83,9 @@ export default function Step6({ handleInputChange, values }) {
           label="Saldo Previsto"
           value={values.saldo_previsto}
           onChange={value =>
-            handleInputChange('saldo_previsto', value.target.value)
+            handleInputChange('saldo_previsto', parseInt(value.target.value))
           }
-          id="formatted-numberformat-input"
+          id="formatted-numberformat-input3"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">R$</InputAdornment>
@@ -100,9 +100,9 @@ export default function Step6({ handleInputChange, values }) {
           label="Receita Realizada"
           value={values.receita_realizada}
           onChange={value =>
-            handleInputChange('receita_realizada', value.target.value)
+            handleInputChange('receita_realizada', parseInt(value.target.value))
           }
-          id="formatted-numberformat-input"
+          id="formatted-numberformat-input4"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">R$</InputAdornment>
@@ -117,9 +117,9 @@ export default function Step6({ handleInputChange, values }) {
           label="Despesa Realizada"
           value={values.despesa_realizada}
           onChange={value =>
-            handleInputChange('despesa_realizada', value.target.value)
+            handleInputChange('despesa_realizada', parseInt(value.target.value))
           }
-          id="formatted-numberformat-input"
+          id="formatted-numberformat-input5"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">R$</InputAdornment>
@@ -134,9 +134,9 @@ export default function Step6({ handleInputChange, values }) {
           label="Saldo Realizado"
           value={values.saldo_realizado}
           onChange={value =>
-            handleInputChange('saldo_realizado', value.target.value)
+            handleInputChange('saldo_realizado', parseInt(value.target.value))
           }
-          id="formatted-numberformat-input"
+          id="formatted-numberformat-input6"
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">R$</InputAdornment>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +12,7 @@ import {
   Typography,
   Fab,
   Grid,
+  CircularProgress,
 } from '@material-ui/core';
 
 import BackIcon from '@material-ui/icons/ArrowBackIosOutlined';
@@ -21,6 +22,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import SettingsIcon from '@material-ui/icons/Settings';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import VideoLabelIcon from '@material-ui/icons/VideoLabel';
+import axios from 'axios';
 
 import Step1 from '../Foms/Step1';
 import Step2 from '../Foms/Step2';
@@ -29,6 +31,9 @@ import Step4 from '../Foms/Step4';
 import Step5 from '../Foms/Step5';
 import Step6 from '../Foms/Step6';
 import Step7 from '../Foms/Step7';
+import { sendDate } from '../../utils/parseDate';
+
+const url = 'http://localhost:3333/';
 
 const useQontoStepIconStyles = makeStyles({
   root: {
@@ -50,6 +55,11 @@ const useQontoStepIconStyles = makeStyles({
     color: '#784af4',
     zIndex: 1,
     fontSize: 18,
+  },
+  divLoading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -89,6 +99,7 @@ const useColorlibStepIconStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   fab: {
     margin: 0,
     top: 'auto',
@@ -148,6 +159,12 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  divLoading: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '90vh',
+  },
 }));
 
 function getSteps() {
@@ -168,6 +185,7 @@ export default function CustomizedSteppers() {
   const steps = getSteps();
   const [links, setLinks] = useState([]);
   const [uploads, setUploads] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     conjunto: '',
     fase: '',
@@ -273,6 +291,7 @@ export default function CustomizedSteppers() {
       nome: 'Finalizado',
     },
   ];
+
   function handleInputChange(name, value) {
     setValues({ ...values, [name]: value });
   }
@@ -282,12 +301,23 @@ export default function CustomizedSteppers() {
       [name]: nextState,
     });
   }
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+    values.data_conclusao_aprovador = sendDate(values.data_conclusao_aprovador);
+    values.data_conclusao_contador = sendDate(values.data_conclusao_contador);
+    values.data_conclusao_responsavel = sendDate(
+      values.data_conclusao_responsavel
+    );
 
-    setTimeout(() => {
-      console.log('form', values);
-    }, 500);
+    // setLoading(true);
+    // try {
+    //   const res = await axios.post(`${url}acoes`, values);
+    //   console.log('res', res.data);
+    //   setLoading(fase);
+    // } catch (error) {
+    //   console.log('erro', error);
+    //   setLoading(false);
+    // }
   }
   const handleNext = () => {
     setActiveStep(prevActiveStep => prevActiveStep + 1);
@@ -367,85 +397,100 @@ export default function CustomizedSteppers() {
         );
     }
   }
-
+  function finalStep() {
+    return (
+      <Grid alignContent="center" justify="center" container spacing={2}>
+        <Grid item xs={4}>
+          <Typography className={classes.instructions}>
+            Todas as Etapas Completadas! Registrar Ações?
+          </Typography>
+          <Button
+            className={classes.button}
+            onClick={e => handleSubmit(e)}
+            color="primary"
+            variant="contained"
+            fullWidth
+          >
+            Enviar
+          </Button>
+          <Button
+            color="inherit"
+            variant="contained"
+            fullWidth
+            onClick={handleReset}
+            className={classes.button}
+          >
+            Resetar
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  }
+  useEffect(() => {
+    setArrayLinks();
+  }, [activeStep === steps.length - 1]);
   return (
     <div className={classes.root}>
-      <Stepper alternativeLabel activeStep={activeStep}>
-        {steps.map(label => (
-          <Step key={label}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
+      {loading ? (
+        <div className={classes.divLoading}>
+          <CircularProgress title="Salvando Ações" size={40} />
+        </div>
+      ) : (
+        <>
+          <Stepper alternativeLabel activeStep={activeStep}>
+            {steps.map(label => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
 
-      <div>
-        {activeStep === steps.length ? (
-          <Grid alignContent="center" justify="center" container spacing={2}>
-            <Grid item xs={4}>
-              <Typography className={classes.instructions}>
-                Todas as Etapas Completadas! Registrar Ações?
-              </Typography>
-              <Button
-                className={classes.button}
-                onClick={e => handleSubmit(e)}
-                color="primary"
-                variant="contained"
-                fullWidth
-              >
-                Enviar
-              </Button>
-              <Button
-                color="inherit"
-                variant="contained"
-                fullWidth
-                onClick={handleReset}
-                className={classes.button}
-              >
-                Resetar
-              </Button>
-            </Grid>
-          </Grid>
-        ) : (
           <div>
-            {getStepContent(activeStep)}
+            {activeStep === steps.length ? (
+              finalStep()
+            ) : (
+              <div>
+                {getStepContent(activeStep)}
 
-            <div style={{ marginTop: 20 }}>
-              <Fab
-                onClick={handleBack}
-                disabled={activeStep === 0}
-                style={{
-                  margin: 0,
-                  top: 'auto',
-                  right: 90,
-                  bottom: 20,
-                  left: 'auto',
-                  position: 'fixed',
-                }}
-              >
-                <BackIcon />
-              </Fab>
-              <Fab
-                onClick={handleNext}
-                style={{
-                  margin: 0,
-                  top: 'auto',
-                  right: 20,
-                  bottom: 20,
-                  left: 'auto',
-                  position: 'fixed',
-                }}
-                color="primary"
-              >
-                {activeStep === steps.length - 1 ? (
-                  <Check />
-                ) : (
-                  <ArrowForwardIosIcon />
-                )}
-              </Fab>
-            </div>
+                <div style={{ marginTop: 20 }}>
+                  <Fab
+                    onClick={handleBack}
+                    disabled={activeStep === 0}
+                    style={{
+                      margin: 0,
+                      top: 'auto',
+                      right: 90,
+                      bottom: 20,
+                      left: 'auto',
+                      position: 'fixed',
+                    }}
+                  >
+                    <BackIcon />
+                  </Fab>
+                  <Fab
+                    onClick={handleNext}
+                    style={{
+                      margin: 0,
+                      top: 'auto',
+                      right: 20,
+                      bottom: 20,
+                      left: 'auto',
+                      position: 'fixed',
+                    }}
+                    color="primary"
+                  >
+                    {activeStep === steps.length - 1 ? (
+                      <Check />
+                    ) : (
+                      <ArrowForwardIosIcon />
+                    )}
+                  </Fab>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
+        </>
+      )}
     </div>
   );
 }

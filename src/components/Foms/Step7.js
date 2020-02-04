@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { useDropzone } from 'react-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 import { green } from '@material-ui/core/colors';
 import {
-  TextField,
   Paper,
   Grid,
   InputBase,
-  Divider,
   IconButton,
   Chip,
   List,
@@ -18,11 +15,11 @@ import {
   ListItemSecondaryAction,
   Avatar,
 } from '@material-ui/core';
-import { uniqueId } from 'lodash';
+
 import filesize from 'filesize';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ImageIcon from '@material-ui/icons/Image';
-import SearchIcon from '@material-ui/icons/FileCopy';
+
 import Icon from '@material-ui/core/Icon';
 import TheUploader from '../TheUploader';
 
